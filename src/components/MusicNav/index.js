@@ -57,9 +57,9 @@ const MusicNav = () => {
                 <div
                     className="absolute top-full left-0 w-full bg-gray-800 flex flex-col items-center space-y-2 py-4 md:hidden">
                     <a href="/" className="text-white hover:text-gray-300">HOME</a>
-                    <a href="/about/" className="text-white hover:text-gray-300">ABOUT</a>
-                    <a href="/projects/" className="text-white hover:text-gray-300">PROJECTS</a>
-                    <a href="/contact/" className="text-white hover:text-gray-300">CONTACT</a>
+                    <a href="/about" className="text-white hover:text-gray-300">ABOUT</a>
+                    <a href="/projects" className="text-white hover:text-gray-300">PROJECTS</a>
+                    <a href="/contact" className="text-white hover:text-gray-300">CONTACT</a>
                 </div>
             )}
             <StarLayer className="absolute inset-0 z-0"/>
