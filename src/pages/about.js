@@ -5,6 +5,7 @@ import {useInView} from 'react-intersection-observer';
 import ScrollGallery from "../components/ScrollGallery";
 import {Button} from "@nextui-org/react";
 import MyFooter from "../components/MyFooter";
+import Link from "next/link";
 
 const About = () => {
     const {ref: firstRef, inView: firstInView} = useInView({
@@ -176,11 +177,11 @@ const About = () => {
                             been full of challenges and growth, but I know how lucky I am to be doing what I love.
                         </p>
                         <div className="flex items-center mt-8 pb-6">
-                            <a href="/projects/">
+                            <Link href="/projects">
                                 <Button radius="full" color="primary" className="text-lg">
                                     Some of my projects
                                 </Button>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 // MusicNav.jsx
 import React, {useState} from 'react';
 import StarLayer from "./StarLayer";
+import Link from "next/link";
 
 const MusicNav = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -56,10 +57,10 @@ const MusicNav = () => {
             {isOpen && (
                 <div
                     className="absolute top-full left-0 w-full bg-gray-800 flex flex-col items-center space-y-2 py-4 md:hidden">
-                    <a href="/" className="text-white hover:text-gray-300">HOME</a>
-                    <a href="/about" className="text-white hover:text-gray-300">ABOUT</a>
-                    <a href="/projects" className="text-white hover:text-gray-300">PROJECTS</a>
-                    <a href="/contact" className="text-white hover:text-gray-300">CONTACT</a>
+                    <Link href="/" className="text-white hover:text-gray-300">HOME</Link>
+                    <Link href="/about" className="text-white hover:text-gray-300">ABOUT</Link>
+                    <Link href="/projects" className="text-white hover:text-gray-300">PROJECTS</Link>
+                    <Link href="/contact" className="text-white hover:text-gray-300">CONTACT</Link>
                 </div>
             )}
             <StarLayer className="absolute inset-0 z-0"/>
