@@ -1,0 +1,20 @@
+.word-animation {
+    display: flex;
+}
+
+.character {
+    position: relative;
+    margin-right: 10px;
+}
+
+.stroke {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.stroke.visible {
+    opacity: 1;
+}

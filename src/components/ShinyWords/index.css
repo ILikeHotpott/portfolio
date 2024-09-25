@@ -1,0 +1,41 @@
+.glow-text {
+    color: #fefaf6;
+    text-shadow: 0 0 5px #ffffff,
+    0 0 20px #bf977d,
+    0 0 30px #492513,
+    0 0 40px #492513,
+    0 0 50px #492513,
+    0 0 60px #432211,
+    0 0 70px #432211,
+    0 0 80px #432211,
+    0 0 90px #432211,
+    0 0 120px #ff0000;
+}
+
+.text-weight {
+    font-weight: 550;
+    color: #fefaf6;
+
+}
+
+.image-scroll-container {
+  position: relative;
+  height: 100vh;
+}
+
+.image-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/mypic1.jpg'); /* 替换为您的图片路径 */
+  background-size: cover;
+  background-position: center;
+}

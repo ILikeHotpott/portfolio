@@ -1,0 +1,32 @@
+/*body {*/
+/*    height: 1000vh;*/
+/*}*/
+
+/*.v-scroll::-webkit-scrollbar {*/
+/*    display: none;*/
+/*}*/
+
+
+/*.v-scroll {*/
+/*    width: var(--h);*/
+/*    height: var(--w);*/
+/*    position: relative;*/
+/*    transformOrigin: 'left top';*/
+/*    transform: translateY(var(--h)) rotate(-90deg);*/
+/*    overflow: hidden scroll;*/
+/*}*/
+
+/*.content {*/
+/*    width: var(--w);*/
+/*    height: var(--h);*/
+/*    border: 5px solid #f40;*/
+/*    position: absolute;*/
+/*    left: var(--h);*/
+/*    transformOrigin: 'left top';*/
+/*    transform: rotate(90deg);*/
+/*    overflow: hidden scroll;*/
+/*}*/
+
+.gallery::-webkit-scrollbar {
+      display: none;
+    }

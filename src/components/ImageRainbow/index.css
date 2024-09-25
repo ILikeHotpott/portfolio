@@ -1,0 +1,101 @@
+/* index.css */
+
+.gallery-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #f0f0f0;
+  overflow: hidden;
+}
+
+/* 通用画廊样式 */
+.gallery {
+  position: absolute;
+  display: flex;
+  gap: 0; /* 紧密排列，无间隔 */
+}
+
+/* 垂直排列 */
+.vertical {
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 水平排列 */
+.horizontal {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* 斜向排列容器 */
+.diagonal-container {
+  display: flex;
+  flex-direction: row;
+  /* 旋转容器以实现斜向排列 */
+}
+
+/* 图片样式 */
+.gallery-image {
+  width: 150px; /* 正方形 */
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.diagonal-image {
+  transform: rotate(-45deg); /* 逆向旋转以保持水平 */
+  margin-right: -50px; /* 调整负外边距以紧密排列 */
+}
+
+/* 从上方进入的画廊 */
+.from-up {
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 从下方进入的画廊 */
+.from-down {
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 从左侧进入的画廊 */
+.from-left {
+  top: 50%;
+  left: 0%;
+  transform: translateY(-50%);
+}
+
+/* 从右侧进入的画廊 */
+.from-right {
+  top: 50%;
+  right: 0%;
+  transform: translateY(-50%);
+}
+
+/* 斜向左到右下进入的画廊 */
+.diagonal-left-right-down {
+  top: 20%;
+  left: 10%;
+}
+
+/* 斜向右到左上进入的画廊 */
+.diagonal-right-left-up {
+  bottom: 20%;
+  right: 10%;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .gallery-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .diagonal-image {
+    margin-right: -35px; /* 调整负外边距以适应较小的图片 */
+  }
+}
