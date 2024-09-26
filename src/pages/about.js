@@ -13,7 +13,6 @@ const About = () => {
         triggerOnce: true,
     });
 
-    // 绑定第二个文字部分的 inView
     const {ref: secondRef, inView: secondInView} = useInView({
         threshold: 0.5,
         triggerOnce: true,

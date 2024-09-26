@@ -7,7 +7,7 @@ const MusicNav = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="relative z-20">
+        <div className="relative z-20 w-screen">
             <nav className="flex items-center justify-between px-4 py-2 bg-gray-800">
                 <div className="brand-container">
                     <a href="/" className="text-white text-2xl font-bold">

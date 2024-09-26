@@ -34,8 +34,8 @@ const Home = () => {
                     </section>
 
 
-                    <div className="bg-white">
-                        <div className="w-[80%] mx-auto ">
+                    <div className={`${gradient_color}`}>
+                        <div className="min-w-screen mx-auto ">
                             <SelfIntroduction/>
                         </div>
                     </div>
@@ -48,7 +48,7 @@ const Home = () => {
                             text-4xl">
                             My Technology Stack
                         </div>
-                        <div className={`mt-52  ${gradient_color}`}>
+                        <div className={`mt-52 w-screen ${gradient_color}`}>
                             <Carousel images={images}/>
                         </div>
                     </section>
