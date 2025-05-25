@@ -244,6 +244,7 @@ export default function SendMessage() {
                     >
                         Submit
                     </Button>
+
                     <a href={"https://www.linkedin.com/in/yitong-liu-0239552b4/"}>
                         <Icon className="text-default-400" icon="skill-icons:linkedin" width={56}/>
                     </a>
