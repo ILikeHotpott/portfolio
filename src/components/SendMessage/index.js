@@ -1,24 +1,22 @@
+"use client";
+
 import React, {useRef, useEffect, useState} from "react";
 import {
     Button,
-    Input,
-    Textarea,
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    useDisclosure,
-} from "@nextui-org/react";
+    TextField,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+} from "@mui/material";
 import emailjs from "@emailjs/browser";
-import {Icon} from "@iconify/react";
 
 export default function SendMessage() {
     const form = useRef();
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
-
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState("");
+    const [organization, setOrganization] = useState("");
     const [email, setEmail] = useState("");
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
@@ -29,18 +27,12 @@ export default function SendMessage() {
         emailjs.init("aiTYekjYZIGPDJ2UI");
     }, []);
 
-    // Form validation logic
     const validateForm = () => {
         let valid = true;
         const newErrors = {};
 
-        if (!firstName.trim()) {
-            newErrors.firstName = "First name is required";
-            valid = false;
-        }
-
-        if (!lastName.trim()) {
-            newErrors.lastName = "Last name is required";
+        if (!name.trim()) {
+            newErrors.name = "Name is required";
             valid = false;
         }
 
@@ -70,18 +62,16 @@ export default function SendMessage() {
         const submissions = JSON.parse(localStorage.getItem("submissions") || "[]");
         const now = Date.now();
 
-        // Remove submissions older than 1 hour
         const recentSubmissions = submissions.filter(
             (timestamp) => now - timestamp < 3600000
         );
 
-        if (recentSubmissions.length >= 3) {
+        if (recentSubmissions.length >= 10) {
             alert(
                 "You have reached the maximum number of submissions per hour. Please try again later."
             );
             return false;
         } else {
-            // Add current timestamp
             recentSubmissions.push(now);
             localStorage.setItem("submissions", JSON.stringify(recentSubmissions));
             return true;
@@ -92,212 +82,255 @@ export default function SendMessage() {
         e.preventDefault();
         console.log("SendMessage component rendered");
 
-        if (!validateForm()) {
-            return;
-        }
-
-        if (!checkRateLimit()) {
-            return;
-        }
+        if (!validateForm()) return;
+        if (!checkRateLimit()) return;
 
         const templateParams = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            subject: subject,
-            message: message,
+            name,
+            organization,
+            email,
+            subject,
+            message,
         };
 
-        emailjs
-            .send("service_7hkeayp", "template_a3y3cze", templateParams)
-            .then(
-                (result) => {
-                    console.log("EmailJS Result:", result.text);
-                    // Clear form
-                    setFirstName("");
-                    setLastName("");
-                    setEmail("");
-                    setSubject("");
-                    setMessage("");
-                    setErrors({});
-                    // Open modal
-                    onOpen();
-                },
-                (error) => {
-                    console.error("EmailJS Error:", error.text);
-                    alert("Failed to send message, please try again.");
-                }
-            );
+        emailjs.send("service_7hkeayp", "template_a3y3cze", templateParams).then(
+            (result) => {
+                console.log("EmailJS Result:", result.text);
+                // 清空表单
+                setName("");
+                setOrganization("");
+                setEmail("");
+                setSubject("");
+                setMessage("");
+                setErrors({});
+                // 打开弹窗
+                setOpen(true);
+            },
+            (error) => {
+                console.error("EmailJS Error:", error.text);
+                alert("Failed to send message, please try again.");
+            }
+        );
+    };
+
+    const handleClose = () => {
+        setOpen(false);
     };
 
     return (
-        <div
-            className="flex h-[90vh] w-screen justify-end overflow-hidden rounded-small bg-content1 p-2 sm:p-4 lg:p-8"
-            style={{
-                backgroundImage:
-                    "url(https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/danielhaha.jpg)",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-            }}
-        >
-            <div className="absolute left-10 hidden md:block">
-                <span className="text-3xl leading-loose text-white">Drop a line...</span>
-                <p className="max-w-xl text-white text-2xl leading-relaxed">
-                    if you have questions, want to work together, wish to know more about
-                    me or just feel like chatting! Fill out the form or write to
-                    yitong1210@gmail.com <br/>
+        <div className=" w-full flex justify-start px-4 py-10">
+            <div className="max-w-3xl w-full">
+                <h1 className="text-5xl font-bold mb-8">Contact Me</h1>
+
+                <p className="text-lg mb-4">
+                    Thank you for your interest.
                 </p>
+
+                <div
+                    className="w-full flex flex-col gap-6 py-6"
+                >
+                    <form ref={form} className="flex flex-col gap-y-14" onSubmit={sendEmail}>
+                        <TextField
+                            label="NAME "
+                            name="name"
+                            type="text"
+                            required
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            error={Boolean(errors.name)}
+                            helperText={errors.name}
+                            variant="outlined"
+                            sx={{
+                                "& .MuiInputLabel-root": {color: "#ccc"},
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: "#aaa",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                },
+                                "& .MuiInputBase-input": {
+                                    color: "#fff",
+                                },
+                                "& .MuiFormHelperText-root": {
+                                    color: "#ccc",
+                                },
+                            }}
+                        />
+
+                        {/* Email */}
+                        <TextField
+                            label="EMAIL "
+                            name="email"
+                            type="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            error={Boolean(errors.email)}
+                            helperText={errors.email}
+                            variant="outlined"
+                            sx={{
+                                "& .MuiInputLabel-root": {color: "#ccc"},
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: "#aaa",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                },
+                                "& .MuiInputBase-input": {
+                                    color: "#fff",
+                                },
+                                "& .MuiFormHelperText-root": {
+                                    color: "#ccc",
+                                },
+                            }}
+                        />
+
+                        {/* Organization (可选项） */}
+                        <TextField
+                            label="ORGANIZATION"
+                            name="organization"
+                            type="text"
+                            value={organization}
+                            onChange={(e) => setOrganization(e.target.value)}
+                            variant="outlined"
+                            sx={{
+                                "& .MuiInputLabel-root": {color: "#ccc"},
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: "#aaa",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                },
+                                "& .MuiInputBase-input": {
+                                    color: "#fff",
+                                },
+                                "& .MuiFormHelperText-root": {
+                                    color: "#ccc",
+                                },
+                            }}
+                        />
+
+                        <TextField
+                            label="SUBJECT "
+                            name="subject"
+                            type="text"
+                            required
+                            value={subject}
+                            onChange={(e) => setSubject(e.target.value)}
+                            error={Boolean(errors.subject)}
+                            helperText={errors.subject}
+                            variant="outlined"
+                            sx={{
+                                "& .MuiInputLabel-root": {color: "#ccc"},
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: "#aaa",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                },
+                                "& .MuiInputBase-input": {
+                                    color: "#fff",
+                                },
+                                "& .MuiFormHelperText-root": {
+                                    color: "#ccc",
+                                },
+                            }}
+                        />
+
+                        {/* Message */}
+                        <TextField
+                            label="MESSAGE "
+                            name="message"
+                            required
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            error={Boolean(errors.message)}
+                            helperText={errors.message}
+                            multiline
+                            rows={5}
+                            variant="outlined"
+                            sx={{
+                                "& .MuiInputLabel-root": {color: "#ccc"},
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: "#aaa",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: "#fff",
+                                    },
+                                },
+                                "& .MuiInputBase-input": {
+                                    color: "#fff",
+                                },
+                                "& .MuiFormHelperText-root": {
+                                    color: "#ccc",
+                                },
+                            }}
+                        />
+
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                mt: 1,
+                                color: "#000",
+                                width: "30%",
+                                height: "50px",
+                                backgroundColor: "#fff",
+                                "&:hover": {
+                                    backgroundColor: "#ddd",
+                                },
+                            }}
+                        >
+                            Submit
+                        </Button>
+                    </form>
+                </div>
             </div>
 
-            <div
-                className="flex w-full max-w-lg flex-col gap-6 rounded-large bg-content1 px-8 pb-6 pt-8 shadow-small text-md">
-                <p className="pb-4 text-3xl text-default-600 font-semibold">
-                    Send Message
-                </p>
-                <form ref={form} className="flex flex-col gap-5" onSubmit={sendEmail}>
-                    <div className="flex gap-4">
-                        <Input
-                            label="First Name"
-                            name="first_name"
-                            type="text"
-                            variant="bordered"
-                            isRequired
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            validationState={errors.firstName ? "invalid" : undefined}
-                            errorMessage={errors.firstName}
-                            classNames={{
-                                input: "w-2/5 text-md text-default-600",
-                                label: "text-md text-default-600",
-                            }}
-                        />
-                        <Input
-                            label="Last Name"
-                            name="last_name"
-                            type="text"
-                            variant="bordered"
-                            isRequired
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            validationState={errors.lastName ? "invalid" : undefined}
-                            errorMessage={errors.lastName}
-                            classNames={{
-                                input: "w-2/5 text-md text-default-600",
-                                label: "text-md text-default-600",
-                            }}
-                        />
-                    </div>
-
-                    <Input
-                        label="Email"
-                        name="email"
-                        type="email"
-                        variant="bordered"
-                        isRequired
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        validationState={errors.email ? "invalid" : undefined}
-                        errorMessage={errors.email}
-                        classNames={{
-                            input: "w-full text-md text-default-600",
-                            label: "text-md text-default-600",
-                        }}
-                    />
-
-                    <Input
-                        label="Subject"
-                        name="subject"
-                        type="text"
-                        variant="bordered"
-                        isRequired
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
-                        validationState={errors.subject ? "invalid" : undefined}
-                        errorMessage={errors.subject}
-                        classNames={{
-                            input: "w-full text-md text-default-600",
-                            label: "text-md text-default-600",
-                        }}
-                    />
-
-                    <Textarea
-                        label="Message"
-                        name="message"
-                        variant="bordered"
-                        isRequired
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        validationState={errors.message ? "invalid" : undefined}
-                        errorMessage={errors.message}
-                        className="w-full text-md"
-                        minRows={5}
-                        classNames={{
-                            input: "w-full text-md text-default-600",
-                            label: "text-md text-default-600",
-                        }}
-                    />
-
-                    <Button
-                        color="primary"
-                        type="submit"
-                        className="mt-2 text-md px-6 py-3"
-                    >
-                        Submit
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+                <DialogTitle
+                    sx={{
+                        backgroundColor: "#333",
+                        color: "#fff",
+                    }}
+                >
+                    Your message has been sent successfully!
+                </DialogTitle>
+                <DialogContent sx={{backgroundColor: "#333"}}>
+                    <DialogContentText sx={{color: "#fff"}}>
+                        Thank you for your message. I'll get back to you as soon as possible.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions sx={{backgroundColor: "#333"}}>
+                    <Button color="primary" onClick={handleClose} autoFocus sx={{color: "#fff"}}>
+                        Close
                     </Button>
-
-                    <a href={"https://www.linkedin.com/in/yitong-liu-0239552b4/"}>
-                        <Icon className="text-default-400" icon="skill-icons:linkedin" width={56}/>
-                    </a>
-                </form>
-            </div>
-
-            <Modal
-                backdrop="opaque"
-                size={"lg"}
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                motionProps={{
-                    variants: {
-                        enter: {
-                            y: 0,
-                            opacity: 1,
-                            transition: {
-                                duration: 0.3,
-                                ease: "easeOut",
-                            },
-                        },
-                        exit: {
-                            y: -20,
-                            opacity: 0,
-                            transition: {
-                                duration: 0.2,
-                                ease: "easeIn",
-                            },
-                        },
-                    },
-                }}
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1 text-default-700">
-                                Your message has been sent successfully!
-                            </ModalHeader>
-                            <ModalBody>
-                                <p className={"text-default-700"}>
-                                    Thank you for your message. I'll get back to you as soon as
-                                    possible.
-                                </p>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="primary" onPress={onClose}>
-                                    Close
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

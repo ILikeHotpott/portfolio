@@ -1,4 +1,6 @@
-// MusicNav.jsx
+"use client";
+
+
 import React, {useState} from 'react';
 import StarLayer from "./StarLayer";
 import Link from "next/link";
