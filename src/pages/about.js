@@ -9,12 +9,17 @@ import Link from "next/link";
 
 const About = () => {
     const {ref: firstRef, inView: firstInView} = useInView({
-        threshold: 0,
+        threshold: 0.2,
         triggerOnce: true,
     });
 
     const {ref: secondRef, inView: secondInView} = useInView({
-        threshold: 0.5,
+        threshold: 0.2,
+        triggerOnce: true,
+    });
+
+    const {ref: thirdRef, inView: thirdInView} = useInView({
+        threshold: 0.1,
         triggerOnce: true,
     });
 
@@ -31,21 +36,21 @@ const About = () => {
         "https://i.scdn.co/image/ab67616d0000b273ea7caaff71dea1051d49b2fe"
     ];
     const travel_images = [
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/IMG_0447+(1).jpeg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/IMG_0583+(1).jpeg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/IMG_0618+(1).jpeg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/IMG_2545+(1).jpeg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/travel2+(1).jpg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/travel4+(1).jpg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/travel6+(1).jpg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/IMG_2816+(1).jpeg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/travel10+(1).jpg",
+        "/pictures/travel1.jpeg",
+        "/pictures/travel2.jpeg",
+        "/pictures/travel3.jpeg",
+        "/pictures/travel4.jpeg",
+        "/pictures/travel5.jpeg",
+        "/pictures/travel6.jpeg",
+        "/pictures/travel7.jpg",
+        "/pictures/travel8.jpg",
+        "/pictures/travel9.jpg",
+        "/pictures/travel10.jpg",
+        "/pictures/travel11.jpg",
     ];
 
     const gallery_speed = 0.4;
-    const gradient_color = "bg-gradient-to-r from-orange-500 via-purple-400 to-blue-500";
 
-    // Calculate size for ScrollGallery based on screen width
     const [windowWidth, setWindowWidth] = React.useState(
         typeof window !== 'undefined' ? window.innerWidth : 1024
     );
@@ -62,156 +67,160 @@ const About = () => {
 
     let gallerySize;
     if (windowWidth < 640) {
-        // Mobile screens
-        gallerySize = 160;
+        gallerySize = 150;
     } else if (windowWidth < 768) {
-        // Small screens
-        gallerySize = 160;
+        gallerySize = 180;
     } else if (windowWidth < 1024) {
-        // Medium screens
-        gallerySize = 230;
+        gallerySize = 220;
     } else {
         gallerySize = 250;
     }
-    console.log(windowWidth, gallerySize);
 
     return (
-        <div className="bg-white min-h-screen">
-            <div className={"sticky top-0 z-50"}>
+        <div className="bg-slate-900 text-slate-200 min-h-screen selection:bg-sky-500 selection:text-white">
+            <div className={"sticky top-0 z-50 backdrop-blur-md bg-slate-900/70"}>
                 <MusicNav/>
             </div>
 
             {/* About me */}
-            <div
+            <section
+                id="about-me"
                 ref={firstRef}
-                className="flex flex-col md:flex-row items-stretch justify-between md:h-[100vh] mx-auto w-[90%]"
+                className="flex flex-col md:flex-row items-center justify-between min-h-[85vh] md:min-h-[90vh] mx-auto w-[90%] lg:w-[85%] py-12 md:py-20"
             >
                 {/* Text section */}
                 <div
-                    className={`text-black w-full md:w-[60%] flex items-center justify-center md:h-full px-5 md:px-20 transition duration-700 ease-in-out ${
-                        firstInView ? 'translate-y-0 opacity-100' : '-translate-x-20 opacity-0'
+                    className={`w-full md:w-[55%] flex flex-col justify-center md:h-full px-4 md:px-8 lg:px-12 transition-all duration-1000 ease-in-out ${
+                        firstInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                     }`}
                 >
-                    <div className="mx-4 w-full">
-                        <p className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl leading-loose mb-8">
-                            "About me"
-                        </p>
-                        <p className="text-base sm:text-lg md:text-2xl text-black">
-                            I define myself as an open-minded artisan, constantly driven by an endless
-                            <span
-                                className="px-2 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                                curiosity
-                            </span>
-                            to explore new possibilities. I am particularly skilled at combining the things I love with
-                            my technical expertise. I believe this allows me to create products that are infused with
-                            <span
-                                className="px-2 bg-gradient-to-r from-green-400 to-yellow-400 bg-clip-text text-transparent">
-                                passion
-                            </span>
-                            and
-                            <span
-                                className="pl-2 bg-gradient-to-r from-yellow-500 via-red-500 to-pink-500 bg-clip-text text-transparent">
-                                warmth
-                            </span>.
-                        </p>
-                    </div>
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+                        About Me
+                    </h1>
+                    <p className="text-lg sm:text-xl md:text-2xl text-slate-300 leading-relaxed">
+                        I define myself as an open-minded artisan, constantly driven by an endless
+                        <span
+                            className="px-1.5 mx-1 bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent font-semibold">
+                            curiosity
+                        </span>
+                        to explore new possibilities. I am particularly skilled at combining the things I love with
+                        my technical expertise. I believe this allows me to create products that are infused with
+                        <span
+                            className="px-1.5 mx-1 bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent font-semibold">
+                            passion
+                        </span>
+                        and
+                        <span
+                            className="px-1.5 ml-1 bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
+                            warmth
+                        </span>.
+                    </p>
                 </div>
                 {/* Image section */}
                 <div
-                    className={`w-full md:w-[40%] flex items-center justify-center md:h-full transition-all duration-700 ease-in-out transform ${
-                        firstInView ? 'translate-y-0 opacity-100' : 'translate-x-20 opacity-0'
+                    className={`w-full md:w-[45%] flex items-center justify-center md:h-full mt-10 md:mt-0 transition-all duration-1000 ease-in-out delay-200 ${
+                        firstInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                     }`}
                 >
                     <img
-                        src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/WechatIMG432.jpg"
-                        alt="About me"
-                        className="w-full h-auto"
+                        src="/pictures/WechatIMG432.jpg"
+                        alt="Yitong Liu - About me"
+                        className="rounded-lg shadow-2xl shadow-sky-900/50 object-cover max-h-[70vh] w-auto"
                     />
                 </div>
-            </div>
+            </section>
 
             {/* Journey of Programming */}
-            <div
+            <section
+                id="journey"
                 ref={secondRef}
-                className="flex flex-col-reverse md:flex-row items-stretch justify-between md:h-[100vh] mt-10 mx-auto w-[90%]"
+                className="flex flex-col-reverse md:flex-row items-center justify-between min-h-[85vh] md:min-h-[90vh] mx-auto w-[90%] lg:w-[85%] py-12 md:py-20"
             >
-
                 {/* Image section */}
                 <div
-                    className={`w-full md:w-[40%] flex items-center justify-center md:h-full transition-all duration-700 ease-in-out transform ${
-                        secondInView ? 'translate-y-0 opacity-100' : '-translate-x-20 opacity-0'
+                    className={`w-full md:w-[45%] flex items-center justify-center md:h-full mb-10 md:mb-0 transition-all duration-1000 ease-in-out ${
+                        secondInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                     }`}
                 >
                     <img
-                        src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/WechatIMG433.jpg"
+                        src="/pictures/WechatIMG433.jpg"
                         alt="Journey of Programming"
-                        className="w-full h-auto"
+                        className="rounded-lg shadow-2xl shadow-sky-900/50 object-cover max-h-[70vh] w-auto"
                     />
                 </div>
                 {/* Text section */}
                 <div
-                    className={`text-black w-full md:w-[60%] flex items-center justify-center md:h-full px-5 md:px-20 transition-all duration-700 ease-in-out transform ${
-                        secondInView ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
+                    className={`w-full md:w-[55%] flex flex-col justify-center md:h-full px-4 md:px-8 lg:px-12 transition-all duration-1000 ease-in-out delay-200 ${
+                        secondInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                     }`}
                 >
-                    <div className="mx-4 w-full">
-                        <p className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl leading-loose mb-8">
-                            "Journey of
-                            <span
-                                className="pl-2 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                                Programming
-                            </span>
-                            "
-                        </p>
-                        <p className="text-base sm:text-lg md:text-2xl text-black">
-                            The journey began in early 2023, when I printed my first line of
-                            <span
-                                className="px-2 bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
-                                "Hello world"
-                            </span>
-                            in the computer lab at school, and I knew right away that I loved this feeling. From that
-                            moment
-                            on, I embarked on a rapid learning journey, starting with foundational knowledge, moving on
-                            to solving algorithm problems, and eventually developing complete projects. This path has
-                            been full of challenges and growth, but I know how lucky I am to be doing what I love.
-                        </p>
-                        <div className="flex items-center mt-8 pb-6">
-                            <Link href="/projects">
-                                <Button radius="full" color="primary" className="text-lg">
-                                    Some of my projects
-                                </Button>
-                            </Link>
-                        </div>
+                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+                        Journey of
+                        <span
+                            className="pl-2 bg-gradient-to-r from-sky-400 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                            Programming
+                        </span>
+                    </h2>
+                    <p className="text-lg sm:text-xl md:text-2xl text-slate-300 leading-relaxed">
+                        The journey began in early 2023, when I printed my first line of
+                        <span
+                            className="px-1.5 mx-1 bg-gradient-to-r from-lime-400 via-emerald-400 to-green-400 bg-clip-text text-transparent font-semibold">
+                            "Hello world"
+                        </span>
+                        in the computer lab at school, and I knew right away that I loved this feeling. From that
+                        moment
+                        on, I embarked on a rapid learning journey, starting with foundational knowledge, moving on
+                        to solving algorithm problems, and eventually developing complete projects. This path has
+                        been full of challenges and growth, but I know how lucky I am to be doing what I love.
+                    </p>
+                    <div className="flex items-center mt-10 pb-6">
+                        <Link href="/projects" passHref>
+                            <Button
+                                radius="full"
+                                className="bg-sky-500 hover:bg-sky-600 text-white font-semibold text-lg px-8 py-6 shadow-lg hover:shadow-sky-500/50 transition-all duration-300"
+                            >
+                                Explore My Projects
+                            </Button>
+                        </Link>
                     </div>
                 </div>
-            </div>
+            </section>
 
             {/* Scroll Galleries */}
-            <div className={`min-h-[110vh] ${gradient_color} mt-10`}>
-                <div className="mb-10 text-center text-white lg:text-4xl md:text-3xl text-2xl">
-                    <div className="pt-20 mb-10">
-                        Outside of programming, I also enjoy music,
+            <section id="hobbies" className="bg-slate-800 py-16 md:py-24 lg:py-32 mt-10 md:mt-16">
+                <div 
+                    ref={thirdRef}
+                    className={`transition-all duration-1000 ease-in-out ${thirdInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                >
+                    <div className="mb-12 md:mb-16 text-center text-slate-100 text-3xl sm:text-4xl lg:text-5xl font-bold">
+                        <p className="pt-8 md:pt-12 mb-6 md:mb-10">
+                            Outside of programming, I also enjoy music,
+                        </p>
                     </div>
-                    <ScrollGallery
-                        images={music_images}
-                        speed={gallery_speed}
-                        margin={10}
-                        direction="left"
-                        size={gallerySize}
-                    />
                 </div>
+                <ScrollGallery
+                    images={music_images}
+                    speed={gallery_speed}
+                    margin={15}
+                    direction="left"
+                    size={gallerySize}
+                />
 
-                <div className="mt-28 mb-10 text-center text-white lg:text-4xl md:text-3xl text-2xl">
-                    and traveling.
+                <div 
+                    className={`transition-all duration-1000 ease-in-out delay-300 ${thirdInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                >
+                    <div className="mt-16 md:mt-24 mb-12 md:mb-16 text-center text-slate-100 text-3xl sm:text-4xl lg:text-5xl font-bold">
+                        and traveling.
+                    </div>
                 </div>
                 <ScrollGallery
                     images={travel_images}
                     speed={gallery_speed}
-                    margin={10}
+                    margin={15}
                     direction="right"
                     size={gallerySize}
                 />
-            </div>
+            </section>
 
             <MyFooter/>
         </div>

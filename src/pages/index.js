@@ -1,66 +1,114 @@
+"use client";
+
+import React from 'react';
 import "../globals.css";
-import WelcomeWords from "../components/WelcomeWords";
+
 import MusicNav from "../components/MusicNav";
-import Carousel from "../components/Carousel";
+import WelcomeWords from "../components/WelcomeWords";
 import SelfIntroduction from "../components/SelfIntroduction";
 import Services from "../components/Services";
-import MyFooter from "../components/MyFooter";
+import Carousel from "../components/Carousel"; // Assumed component
 import MultipleGallery from "../components/MultipleGallery";
+import MyFooter from "../components/MyFooter"; // Assumed component
+import Link from 'next/link';
 
-const Home = () => {
-    const images = [
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/catppuccin--javascript-react.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--python.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--django-icon.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--java-light.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--javascript.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--graphql.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--mysql-light.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/vscode-icons--file-type-tailwind.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--aws-light.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--nginx.svg"
-    ];
-    const gradient_color = "bg-gradient-to-r from-orange-500 via-purple-400 to-blue-500";
+const StarLayer = ({className}) => (
+    <div className={`${className} absolute inset-0 -z-20 overflow-hidden`}>
+        <div
+            className="absolute inset-0 bg-gradient-to-br from-gray-900 via-indigo-900/30 to-gray-900 animate-subtle-pulse">
+            {/* Placeholder for a more complex star effect */}
+            {Array.from({length: 50}).map((_, i) => (
+                <div key={i} className="absolute bg-white rounded-full animate-pulse" style={{
+                    width: `${Math.random() * 2 + 1}px`,
+                    height: `${Math.random() * 2 + 1}px`,
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 5}s`,
+                    opacity: Math.random() * 0.5 + 0.2,
+                }}></div>
+            ))}
+        </div>
+    </div>
+);
 
+
+const techImages = [
+    "/logos/react.svg", "/logos/python.svg", "/logos/django.svg",
+    "/logos/langchain.svg", "/logos/java.svg", "/logos/js.svg",
+    "/logos/mysql.svg", "/logos/tailwind.svg", "/logos/aws.svg",
+    "/logos/nginx.svg",
+];
+
+export default function Home() {
     return (
-        <div className="bg-white">
-            <div id="pinContainer">
-                <div id="slideContainer">
-                    <div className="sticky top-0 z-50">
-                        <MusicNav/>
+        <div className="min-h-screen w-full bg-gray-900 text-gray-100 selection:bg-cyan-500 selection:text-gray-900">
+
+            <MusicNav/>
+
+            <main className="flex flex-col pt-[72px]">
+                <section
+                    id="hero"
+                    className="relative isolate flex flex-col items-center justify-center h-[calc(100dvh-72px)] min-h-[600px] overflow-hidden px-6 text-center"
+                >
+                    <StarLayer className="opacity-70"/>
+                    <WelcomeWords/>
+
+                    <div
+                        className="relative z-10 animate-slide-in-fade">
+                        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4">
+                            Yitong Liu
+                        </h1>
+                        <p className="text-2xl sm:text-3xl md:text-4xl text-cyan-400 font-medium mb-8">
+                             Code, Create, Captivate.
+                        </p>
+                        <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-300 mb-10">
+                            Full-Stack Developer & Creative Technologist
+                        </p>
+                        <Link
+                            href="/projects"
+                            className="px-8 py-3 bg-cyan-500 text-gray-900 font-semibold rounded-lg text-lg hover:bg-cyan-400 transition-colors duration-300 shadow-lg hover:shadow-cyan-500/40 transform hover:scale-105"
+                        >
+                            My Projects
+                        </Link>
                     </div>
-                    <section className="panel">
-                        <WelcomeWords/>
-                    </section>
-
-
-                    <div className={`${gradient_color}`}>
-                        <div className="min-w-screen mx-auto ">
-                            <SelfIntroduction/>
-                        </div>
+                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+                        <svg className="w-8 h-8 text-gray-400" fill="none" strokeLinecap="round" strokeLinejoin="round"
+                             strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
                     </div>
+                </section>
 
+                <section id="about">
+                    <SelfIntroduction/>
+                </section>
+
+
+                <section id="services"
+                         className="bg-gray-900">
                     <Services/>
+                </section>
 
-                    <section className={`panel min-h-screen ${gradient_color}`}>
-                        <div
-                            className=" mt-10 pt-16 text-center flex justify-center items-center text-white
-                            text-4xl">
-                            My Technology Stack
+                <section id="stack" className="py-20 md:py-28 bg-gray-800/30">
+                    <div className="container mx-auto px-6 md:px-12 lg:px-20 text-center">
+                        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-gray-100">
+                            My Technology <span className="text-cyan-400">Arsenal</span>
+                        </h2>
+                        <p className="mt-4 mb-12 text-lg text-gray-400 max-w-2xl mx-auto">
+                            Leveraging a modern stack to build robust, scalable, and efficient applications.
+                        </p>
+                        <div className="w-full max-w-5xl mx-auto">
+                            <Carousel images={techImages} speed={2500}/>
                         </div>
-                        <div className={`mt-52 w-screen ${gradient_color}`}>
-                            <Carousel images={images}/>
-                        </div>
-                    </section>
+                    </div>
+                </section>
 
-                    <MultipleGallery />
+                <section id="gallery" className="relative">
+                    <MultipleGallery/>
+                </section>
+            </main>
 
-                    <MyFooter />
-                </div>
-
-            </div>
+            <MyFooter/>
         </div>
     );
-};
-
-export default Home;
+}

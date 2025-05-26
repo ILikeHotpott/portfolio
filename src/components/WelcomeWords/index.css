@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'WelcomeFont';
-  src: url('../../public/fonts/Bumbbled.otf') format('opentype');
+  src: url('../../../public/fonts/Bumbbled.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }

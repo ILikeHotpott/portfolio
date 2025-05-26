@@ -1,101 +1,95 @@
-// MultipleGallery.jsx
-import React, { useState, useEffect } from 'react';
-import { Controller, Scene } from "react-scrollmagic";
-import { Timeline, Tween } from "react-gsap";
-import './index.css';
+"use client";
 
-const MultipleGallery = () => {
-    // State to track window width
-    const [windowWidth, setWindowWidth] = useState(
-        typeof window !== 'undefined' ? window.innerWidth : 1200 // Default to large screen if window is undefined
-    );
+import React, {useState, useEffect} from "react";
+import {Controller, Scene} from "react-scrollmagic";
+import {Timeline, Tween} from "react-gsap";
 
-    // Effect to handle window resize
+// Hook to track viewport width
+const useWindowWidth = () => {
+    const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const handleResize = () => {
-                setWindowWidth(window.innerWidth);
-            };
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-        }
+        if (typeof window === "undefined") return;
+        const onResize = () => setW(window.innerWidth);
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
     }, []);
+    return w;
+};
 
-    // Determine if the screen is large
-    const isLargeScreen = windowWidth >= 1024; // Tailwind's lg breakpoint is 1024px
+export default function MultipleGallery() {
+    const width = useWindowWidth();
+    const isLarge = width >= 1024;
+    const movement = isLarge ? "500vw" : "1000vw";
 
-    // Set movement distance based on screen size
-    const movementDistance = isLargeScreen ? '500vw' : '1000vw';
-
-    // Define galleries with dynamic movement distances
+    // centred X‑shape: y = 0, wrapper div centred via translate(-50%,‑50%)
     const galleries = [
         {
-            direction: 'diagonal1',
-            from: { x: `-${movementDistance}`, y: "25vh" },
-            to: { x: `${movementDistance}`, y: '25vh' },
-            rotation: 'rotate-[45deg]', // Ensure Tailwind is configured to handle arbitrary values
+            id: "diagLTR",
+            from: {x: `-${movement}`, y: "0"},
+            to: {x: `${movement}`, y: "0"},
+            rotation: 45,
         },
         {
-            direction: 'diagonal2',
-            from: { x: `${movementDistance}`, y: '25vh' },
-            to: { x: `-${movementDistance}`, y: '25vh' },
-            rotation: 'rotate-[-45deg]', // Ensure Tailwind is configured to handle arbitrary values
+            id: "diagRTL",
+            from: {x: `${movement}`, y: "0"},
+            to: {x: `-${movement}`, y: "0"},
+            rotation: -45,
         },
     ];
 
-    // Images to display in the gallery
-    const images = [
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--aws-lambda.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--aws-rds.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--aws-s3.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--redis.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/logos--spring-icon.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--aftereffects_1.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--docker_1.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--photoshop.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--redux.svg",
-        "https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/skill-icons--typescript.svg"
+    const icons = [
+        "/gallery/lambda.svg",
+        "/gallery/rds.svg",
+        "/gallery/s3.svg",
+        "/gallery/redis.svg",
+        "/gallery/spring.svg",
+        "/gallery/ae.svg",
+        "/gallery/docker.svg",
+        "/gallery/ps.svg",
+        "/gallery/redux.svg",
+        "/gallery/ts.svg",
     ];
+    const imgs = [...icons, ...icons];
 
     return (
-        <div className="relative bg-white">
+        <div className="relative bg-gray-900 py-20">
             <Controller>
-                <Scene pin duration={2000} triggerHook="onLeave">
+                <Scene pin duration={isLarge ? 2500 : 3000} triggerHook="onLeave" offset={-100}>
                     {(progress) => (
                         <div className="overflow-hidden h-screen w-screen relative">
-                            {galleries.map((gallery, index) => (
+                            {galleries.map((g, i) => (
                                 <div
-                                    key={index}
-                                    className={`image-gallery flex ${gallery.rotation} absolute inset-0`}
-                                    style={{ zIndex: galleries.length + index }}
+                                    key={g.id}
+                                    className="absolute top-1/2 left-1/2 flex items-center"
+                                    style={{transform: "translate(-50%,-50%)", zIndex: 10 + i}}
                                 >
                                     <Timeline totalProgress={progress} paused>
-                                        <Tween from={gallery.from} to={gallery.to} ease="Power1.easeOut">
-                                            {images.map((image, idx) => (
-                                                <img
-                                                    className="w-full h-full object-cover max-h-[40vh]"
-                                                    key={idx}
-                                                    src={image}
-                                                    alt={`Slide ${idx}`}
-                                                />
-                                            ))}
+                                        <Tween from={g.from} to={g.to} ease="Linear.easeNone"
+                                               wrapper={<div style={{transform: `rotate(${g.rotation}deg)`}}/>}>
+                                            <div className="flex whitespace-nowrap">
+                                                {imgs.map((src, idx) => (
+                                                    <img
+                                                        key={`${g.id}-${idx}`}
+                                                        src={src}
+                                                        alt="tech icon"
+                                                        className="h-20 w-20 md:h-56 md:w-56 object-contain bg-gray-700/50 p-3 rounded-lg shadow-lg mx-4 flex-shrink-0"
+                                                    />
+                                                ))}
+                                            </div>
                                         </Tween>
                                     </Timeline>
                                 </div>
                             ))}
 
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <Tween
-                                    from={{ opacity: 0, y: 50 }}
-                                    to={{ opacity: 1, y: 0 }}
-                                    duration={1}
-                                    ease="Power2.easeOut"
-                                >
-                                    <div
-                                        className="text-center text-black text-5xl md:text-4xl sm:text-2xl font-bold"
-                                    >
-                                        And even more, <br />
-                                        with my infinite possibilities.
+                            {/* overlay text */}
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+                                <Tween from={{opacity: 0, scale: 0.8, y: 50}} to={{opacity: 1, scale: 1, y: 0}}
+                                       duration={1.5} ease="Expo.easeOut" totalProgress={progress * 2} paused>
+                                    <div className="text-center p-4 bg-gray-900/70 backdrop-blur-sm rounded-lg">
+                                        <h2 className="text-gray-100 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+                                            And much more, <br/>
+                                            <span className="text-cyan-400">with endless possibilities.</span>
+                                        </h2>
                                     </div>
                                 </Tween>
                             </div>
@@ -105,6 +99,4 @@ const MultipleGallery = () => {
             </Controller>
         </div>
     );
-};
-
-export default MultipleGallery;
+}

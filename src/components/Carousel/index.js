@@ -27,7 +27,7 @@ const Carousel = ({ images }) => {
                                     alt={`Slide ${index}`}
                                     className={`bg-cover bg-center ${
                                         image ===
-                                        'https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/catppuccin--javascript-react.svg'
+                                        '/logos/react.svg'
                                             ? 'self-rotate'
                                             : ''
                                     }`}

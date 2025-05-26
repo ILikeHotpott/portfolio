@@ -1,17 +1,20 @@
-import "./index.css"
+"use client";
+
+import React from 'react';
 
 const WelcomeWords = () => {
-  return (
-    <div className="welcome-words flex justify-center items-center bg-amber-50 overflow-hidden">
-      <video
-        src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/Sep22.mp4"
-        autoPlay
-        muted
-        playsInline
-        className="object-contain w-full h-full"
-      ></video>
-    </div>
-  );
+    return (
+        <div
+            className="welcome-words absolute inset-0 w-full h-full overflow-hidden -z-10">
+            <video
+                src="/Sep22.mp4"
+                autoPlay
+                muted
+                playsInline
+                className="object-cover w-full h-full opacity-40 "
+            ></video>
+            <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+    );
 };
-
 export default WelcomeWords;

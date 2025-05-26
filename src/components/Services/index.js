@@ -1,58 +1,69 @@
+"use client";
 import React from 'react';
-import { useInView } from "react-intersection-observer";
+import {useInView} from "react-intersection-observer";
+
+// Placeholder for icons - ideally use high-quality SVGs
+const ServiceIcon = ({src, alt}) => (
+    <div className="p-3 mb-4 bg-cyan-500/20 rounded-full inline-block ring-2 ring-cyan-500">
+        <img src={src} alt={alt} className="h-10 w-10"/> {/* Or use Heroicons/other SVG libraries */}
+    </div>
+);
+
+const ServiceCard = ({iconSrc, title, children}) => (
+    <div
+        className="bg-gray-800 shadow-xl rounded-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-cyan-500/30 group">
+        <div className="flex justify-center mb-6">
+            {/* Replace with actual SVG components or better <img> handling */}
+            {/* For example using Heroicons: <CloudArrowUpIcon className="h-12 w-12 text-cyan-400" /> */}
+            <div className="p-4 bg-gray-700 rounded-full transition-all duration-300 group-hover:bg-cyan-400">
+                <img src={iconSrc} alt={title}
+                     className="h-10 w-10 filter invert group-hover:filter-none transition-all duration-300"/>
+            </div>
+        </div>
+        <h3 className="text-2xl font-semibold text-gray-100 text-center mb-4 group-hover:text-cyan-300 transition-colors duration-300">{title}</h3>
+        <p className="text-gray-400 text-center text-md leading-relaxed">
+            {children}
+        </p>
+    </div>
+);
 
 const Services = () => {
-  const { ref, inView } = useInView({
-    threshold: 0.5,
-    triggerOnce: true,
-  });
+    const {ref, inView} = useInView({
+        threshold: 0.3,
+        triggerOnce: true,
+    });
 
-  return (
-    <div ref={ref} className={`min-h-[70vh] bg-gray-100 py-10 duration-700 ease-in-out transform ${
-      inView ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-    }`}>
-      <div className="text-center mb-10">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-600">What Can I Do</h2>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto max-w-6xl">
-        {/* 前端开发 */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <div className="flex justify-center mb-4">
-            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/webdev.svg"
-              alt="Web Development" className="h-12 w-12" />
-          </div>
-          <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-2">Frontend Development</h3>
-          <p className="text-gray-600 text-center text-base md:text-lg">
-            I create responsive, user-friendly interfaces that combine clean design with intuitive functionality, ensuring a seamless experience across all devices.
-          </p>
-        </div>
+    return (
+        <div ref={ref}
+             className={`min-h-[70vh] bg-gray-800/50 py-20 md:py-28 transition-opacity duration-1000 ease-in-out ${
+                 inView ? 'opacity-100' : 'opacity-0'
+             }`}>
+            <div className="container mx-auto px-6">
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100">
+                        What I <span className="text-cyan-400">Deliver</span>
+                    </h2>
+                    <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
+                        From concept to deployment, I provide a comprehensive suite of development services.
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
+                    <ServiceCard iconSrc="/services/webdev.svg" title="Frontend Development">
+                        Crafting responsive, intuitive user interfaces with a focus on clean design and seamless
+                        cross-device performance.
+                    </ServiceCard>
+                    <ServiceCard iconSrc="/services/backend.svg" title="Backend Development">
+                        Building robust and scalable server-side logic, APIs, and database solutions with security and
+                        performance at their core.
+                    </ServiceCard>
+                    <ServiceCard iconSrc="/services/cloud.svg" title="AI Application Development">
+                        Bringing ideas to life with modern AI — whether it's chatbots, voice assistants, or creative
+                        tools powered by LLMs, I turn models into magical experiences.
+                    </ServiceCard>
 
-        {/* 后端开发 */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <div className="flex justify-center mb-4">
-            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/backend.svg"
-              alt="Backend Development" className="h-12 w-12" />
-          </div>
-          <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-2">Backend Development</h3>
-          <p className="text-gray-600 text-center text-base md:text-lg">
-            Backend development focuses on creating the logic and infrastructure that support web and applications. I can implement robust APIs, handle data storage, and ensure system security and performance.
-          </p>
+                </div>
+            </div>
         </div>
-
-        {/* 云开发 */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <div className="flex justify-center mb-4">
-            <img src="https://musictop-bucket.s3.ap-southeast-2.amazonaws.com/media/cloud.svg"
-              alt="Cloud Development" className="h-12 w-12" />
-          </div>
-          <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-2">Cloud Development</h3>
-          <p className="text-gray-600 text-center text-base md:text-lg">
-            I help businesses scale with cloud solutions, deploying and managing applications on platforms like AWS to optimize performance, flexibility, and cost-efficiency.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
-
 export default Services;

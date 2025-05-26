@@ -18,7 +18,7 @@ const MyFooter = () => {
             <Icon className="text-default-400" icon="skill-icons:instagram" width={40} md={{ width: 56 }} />
           </a>
         </div>
-        <div className="text-sm text-black">
+        <div className="text-sm text-white">
           Designed and Developed by Yitong Liu
         </div>
       </div>
